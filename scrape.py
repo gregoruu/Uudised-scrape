@@ -1,15 +1,29 @@
+################################################
+# Programmeerimine I
+# 2024/2025 sügissemester
+#
+# Projekt
+# Teema: Uudistekanali web scrape
+#
+#
+# Autorid: Gregor Uustalu, Kaspar Veere
+#
+#
+# Lisakommentaar (nt käivitusjuhend):
+#     pip install BeautifulSoup
+##################################################
 import os
 from bs4 import BeautifulSoup
 import requests
 templates_kaust = "templates"
-def delfi():
+def delfi():  #delfi scrape
     url="https://www.delfi.ee"
     page=requests.get(url)
     soup=BeautifulSoup(page.content,"html.parser")
-    pealkirjad=soup.find_all("h5")
+    pealkirjad=soup.find_all("h5") # Leiab kõik uudiste pealkirjad
     count=0
     uudis=[]
-    for pealkiri in pealkirjad:
+    for pealkiri in pealkirjad: # lisab sõnastikku kõik pealkirjad ja nende lingid
         if count==10:
             break
         link=pealkiri.find("a",href=True)
@@ -19,27 +33,27 @@ def delfi():
             uudis.append({"title": title, "href": href, "source": "Delfi"})
         count+=1
     return uudis
-def ohtuleht():
+def ohtuleht():  #Õhtuleht scrape
     url="https://www.ohtuleht.ee/"
     page=requests.get(url)
     soup=BeautifulSoup(page.content,"html.parser")
-    pealkirjad=soup.find_all("h6")
+    pealkirjad=soup.find_all("h6") # Leiab kõik uudiste pealkirjad
     count=0
     uudis=[]
-    for pealkiri in pealkirjad:
+    for pealkiri in pealkirjad: # lisab sõnastikku kõik pealkirjad ja nende lingid
         if count==10:
             break
         link=pealkiri.find("a",href=True)
         if link:
             title=link.text.strip()
             href=link["href"]
-            if not href.startswith("http"):
+            if not href.startswith("http"): # Õhtuleht ei andnud täielikke linke, seega pidi "https://www.ohtuleht.ee/" selle ette lisama
                 href=url+href
             uudis.append({"title": title, "href": href, "source": "Õhtuleht"})
         count+=1
     return uudis
 
-def generate_html(filename, title, uudised):
+def generate_html(filename, title, uudised): # kirjutab uudiseallika jaoks vahelehe
     content = f"""<!DOCTYPE html>
 <html lang="et">
 <head>
@@ -53,7 +67,7 @@ def generate_html(filename, title, uudised):
     <h1>{title}</h1>
     <ul>
 """
-    for item in uudised:
+    for item in uudised:  # lisab soovitud hulga uudiseid lehele
         content += "<li>\n"
         content += f'    <a href="{item["href"]}" target="_blank">{item["title"]}</a>\n'
         content += "</li>\n"
@@ -62,11 +76,11 @@ def generate_html(filename, title, uudised):
 </body>
 </html>"""
 
-    f=open(filename,"w", encoding="utf-8")
+    f=open(filename,"w", encoding="utf-8") #kirjutab koodi faili
     f.write(content)
     f.close()
 
-def generate_main():
+def generate_main(): # loob pealehe
     content = """<!DOCTYPE html>
 <html lang="et">
 <head>
