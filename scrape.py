@@ -3,14 +3,14 @@
 # 2024/2025 sügissemester
 #
 # Projekt
-# Teema: Uudistekanali web scrape
+# Teema: Uudistekanalite web scrape
 #
 #
 # Autorid: Gregor Uustalu, Kaspar Veere
 #
 #
 # Lisakommentaar (nt käivitusjuhend):
-#     pip install BeautifulSoup
+#     pip install beautifulsoup4
 ##################################################
 import os
 from bs4 import BeautifulSoup
@@ -19,12 +19,12 @@ templates_kaust = "templates"
 def delfi():  #delfi scrape
     url="https://www.delfi.ee"
     page=requests.get(url)
-    soup=BeautifulSoup(page.content,"html.parser")
+    soup=BeautifulSoup(page.content,"html.parser") 
     pealkirjad=soup.find_all("h5") # Leiab kõik uudiste pealkirjad
     count=0
     uudis=[]
     for pealkiri in pealkirjad: # lisab sõnastikku kõik pealkirjad ja nende lingid
-        if count==10:
+        if count==10: # võtab ainult 10 esimest uudist
             break
         link=pealkiri.find("a",href=True)
         if link:
@@ -41,7 +41,7 @@ def ohtuleht():  #Õhtuleht scrape
     count=0
     uudis=[]
     for pealkiri in pealkirjad: # lisab sõnastikku kõik pealkirjad ja nende lingid
-        if count==10:
+        if count==10: # võtab ainult 10 esimest uudist
             break
         link=pealkiri.find("a",href=True)
         if link:
@@ -67,7 +67,7 @@ def generate_html(filename, title, uudised): # kirjutab uudiseallika jaoks vahel
     <h1>{title}</h1>
     <ul>
 """
-    for item in uudised:  # lisab soovitud hulga uudiseid lehele
+    for item in uudised:  # lisab uudised lehele
         content += "<li>\n"
         content += f'    <a href="{item["href"]}" target="_blank">{item["title"]}</a>\n'
         content += "</li>\n"
@@ -76,7 +76,7 @@ def generate_html(filename, title, uudised): # kirjutab uudiseallika jaoks vahel
 </body>
 </html>"""
 
-    f=open(filename,"w", encoding="utf-8") #kirjutab koodi faili
+    f=open(filename,"w", encoding="utf-8") # loob faili ja kirjutab htmli koos uudistega
     f.write(content)
     f.close()
 
@@ -142,7 +142,7 @@ def generate_main(): # loob pealehe
 </body>
 </html>
 """
-    f=open("main.html","w", encoding="utf-8")
+    f=open("main.html","w", encoding="utf-8") #loob faili ja kirjutab htmli
     f.write(content)
     f.close()
 
