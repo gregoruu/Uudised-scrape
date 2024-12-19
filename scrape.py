@@ -11,6 +11,8 @@
 #
 # Lisakommentaar (nt käivitusjuhend):
 #     pip install beautifulsoup4
+#     pip install requests
+#     peab kontrollima, et loodud html failid oleksid samas kaustas kui scrape.py
 ##################################################
 import os
 from bs4 import BeautifulSoup
