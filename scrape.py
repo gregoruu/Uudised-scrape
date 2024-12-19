@@ -30,6 +30,8 @@ def delfi():  #delfi scrape
         if link:
             title=link.text.strip()
             href=link["href"]
+            if not href.startswith("http"): # Delfi ei andnud täielikke linke, seega pidi "https://www.delfi.ee/" selle ette lisama
+                href=url+href
             uudis.append({"title": title, "href": href, "source": "Delfi"})
         count+=1
     return uudis
@@ -90,7 +92,7 @@ def generate_main(): # loob pealehe
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            background-color: #7e7e7e;
             display: flex;
             justify-content: center;
             align-items: center;
